@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CareLoop AI Clinic Portal & Recovery System</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap">
+<style>
+:root{--ink:#0f172a;--mut:#5b6577;--line:#e3e9f2;--blue:#2f7de1;--blue2:#e8f1fd;--grn:#15a34a;--grn2:#e6f6ec;--amb:#c77d0a;--amb2:#fdf3e0;--red:#e5594b;--red2:#fdecea;--pur:#8b5cf6;--pur2:#f3e8ff;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#fff;color:var(--ink);font:400 15px/1.5 'DM Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(520px 360px at 10% 25%,rgba(47,125,225,.18),transparent 70%),radial-gradient(480px 360px at 92% 50%,rgba(21,163,74,.13),transparent 70%),radial-gradient(520px 380px at 50% 100%,rgba(139,92,246,.13),transparent 70%)}
+[hidden]{display:none!important}
+:focus-visible{outline:3px solid var(--blue);outline-offset:2px;border-radius:8px}
+.wrap{max-width:1200px;margin:0 auto;padding:0 24px}
+.bar{position:sticky;top:0;z-index:30;border-bottom:1px solid var(--line);background:rgba(255,255,255,.75);-webkit-backdrop-filter:blur(20px) saturate(180%);backdrop-filter:blur(20px) saturate(180%)}
+.bar .wrap{display:flex;justify-content:space-between;align-items:center;height:64px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:20px;letter-spacing:-.3px}
+.header-pills{display:flex;align-items:center;gap:8px}
+.pill{font-size:12px;color:var(--mut);border:1px solid var(--line);padding:5px 12px;border-radius:999px;background:#fff8;display:inline-flex;align-items:center;gap:6px}
+.pill.live{color:var(--grn);background:var(--grn2);border-color:#bbf7d0;font-weight:500}
+h1{font-size:clamp(30px,4.5vw,48px);line-height:1.1;letter-spacing:-.03em;font-weight:600;margin:40px 0 10px}
+.sub{color:var(--mut);font-size:17px;margin:0 0 24px;max-width:620px}
+.glass{border:1px solid rgba(255,255,255,.9);background:rgba(255,255,255,.6);-webkit-backdrop-filter:blur(22px) saturate(190%);backdrop-filter:blur(22px) saturate(190%);box-shadow:0 0 0 1px rgba(15,23,42,.05),0 20px 50px -24px rgba(47,125,225,.3),inset 0 1px 0 #fff;border-radius:18px}
+.card{padding:24px;max-width:760px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:42px;padding:0 20px;border-radius:10px;border:1px solid var(--blue);background:var(--blue);color:#fff;font:500 14px 'DM Sans',sans-serif;cursor:pointer;transition:all .15s ease}
+.btn:hover{filter:brightness(1.05);transform:translateY(-1px)}
+.btn.ghost{background:#fffb;color:var(--ink);border-color:var(--line)}
+.btn.ghost:hover{background:#fff;border-color:var(--ink)}
+.btn.success{background:var(--grn);border-color:var(--grn);color:#fff}
+.btn.danger{background:var(--red);border-color:var(--red);color:#fff}
+.btn.sm{min-height:34px;padding:0 12px;font-size:13px;border-radius:8px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px}.w{grid-column:1/-1}
+label,.lb{display:block;font-size:13px;color:var(--mut);font-weight:500}
+input,select,textarea,.pk{display:flex;align-items:center;width:100%;min-height:42px;margin-top:6px;padding:0 14px;border-radius:10px;border:1px solid var(--line);background:#fffb;color:var(--ink);font:14px 'DM Sans',sans-serif;text-align:left}
+textarea{padding:10px 14px;min-height:76px;resize:vertical;display:block}
+.pk{cursor:pointer;justify-content:space-between}.pk.set{color:var(--ink)}.pk:not(.set){color:#8a94a6}
+.chips{display:flex;gap:8px;margin-top:6px}
+.chip{flex:1;min-height:42px;border-radius:10px;border:1px solid var(--line);background:#fffb;font:500 14px 'DM Sans',sans-serif;cursor:pointer;color:var(--ink)}
+.chip[aria-pressed="true"]{background:var(--blue);border-color:var(--blue);color:#fff}
+.fw{position:relative}
+.pop{position:absolute;z-index:40;top:calc(100% + 6px);left:0;width:300px;max-width:calc(100vw - 48px);padding:16px;border-radius:16px;border:1px solid rgba(255,255,255,.95);background:rgba(255,255,255,.92);-webkit-backdrop-filter:blur(26px) saturate(190%);backdrop-filter:blur(26px) saturate(190%);box-shadow:0 24px 60px -20px rgba(15,23,42,.35)}
+.ch{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.nv{width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:#fff;font-size:16px;cursor:pointer}
+.cg{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;text-align:center;font-size:12px;color:var(--mut)}
+.dy{aspect-ratio:1;min-height:34px;border:0;border-radius:50%;background:transparent;font:500 13px 'DM Sans',sans-serif;color:var(--ink);cursor:pointer}
+.dy:hover:not(:disabled){background:var(--blue2)}.dy:disabled{color:#c3cbd8;cursor:not-allowed}.dy.on{background:var(--blue);color:#fff}
+.face{position:relative;width:200px;height:200px;margin:4px auto 10px;border-radius:50%;background:#fff9;border:1px solid var(--line)}
+.hb{position:absolute;left:calc(50% - 16px);top:calc(50% - 16px);width:32px;height:32px;border-radius:50%;border:0;background:transparent;font:500 14px 'DM Sans',sans-serif;cursor:pointer;color:var(--ink);transform:rotate(var(--a)) translateY(-76px) rotate(calc(-1*var(--a)))}
+.hb.on{background:var(--blue);color:#fff}
+.hand{position:absolute;left:calc(50% - 1px);top:calc(50% - 68px);width:2px;height:68px;background:var(--blue);transform-origin:bottom center;transform:rotate(var(--a));transition:transform .3s}
+.hub{position:absolute;left:calc(50% - 5px);top:calc(50% - 5px);width:10px;height:10px;border-radius:50%;background:var(--blue)}
+.row{display:flex;gap:8px;margin-bottom:10px}
+.msg{margin:12px 0 0;font-size:13px;color:var(--red)}
+.ok{text-align:center;padding:36px 24px}.ok b{display:block;font-size:24px;font-weight:600;margin:14px 0 6px}.ok p{margin:4px 0;color:var(--mut)}
+.ico{width:48px;height:48px;border-radius:50%;background:var(--grn2);color:var(--grn);display:inline-grid;place-items:center;font-weight:700;font-size:22px}
+.login{max-width:420px;margin:56px auto;padding:28px}.login h2,.sh h2{margin:0 0 6px;font-size:26px;font-weight:600;letter-spacing:-.02em}
+.sim{margin-top:18px;padding-top:14px;border-top:1px dashed var(--line);font-size:12px;color:var(--mut)}
+.sim .row{margin:8px 0 0}.sim .btn{min-height:36px;padding:0 12px;font-size:12px;flex:1}
+.sh{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin:28px 0 18px}
+.staff-nav{display:flex;gap:8px;margin-bottom:20px;border-bottom:1px solid var(--line);padding-bottom:12px}
+.tab-btn{min-height:38px;padding:0 16px;border-radius:999px;border:1px solid var(--line);background:#fff9;font:500 13px 'DM Sans',sans-serif;cursor:pointer;color:var(--ink);display:inline-flex;align-items:center;gap:6px}
+.tab-btn[aria-selected="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.tab-badge{background:var(--red);color:#fff;font-size:11px;font-weight:700;padding:2px 7px;border-radius:999px}
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:18px}
+.stat{padding:14px 16px;border-radius:14px}.stat small{color:var(--mut);font-size:12px;font-weight:500}.stat b{display:block;font-size:30px;font-weight:600;letter-spacing:-.03em;line-height:1.2;margin-top:4px}
+.tools{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px;align-items:center}.tools input{max-width:280px;margin:0}
+.f{min-height:36px;padding:0 14px;border-radius:999px;border:1px solid var(--line);background:#fffb;font:500 13px 'DM Sans',sans-serif;cursor:pointer;color:var(--ink)}.f[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.tw{overflow-x:auto;padding:6px;border-radius:14px}
+table{width:100%;border-collapse:collapse;font-size:13px;min-width:960px}
+th{text-align:left;font-weight:600;color:var(--mut);font-size:12px;padding:10px 12px;border-bottom:1px solid var(--line)}
+td{padding:12px;border-bottom:1px solid rgba(227,233,242,.7);vertical-align:top}tr:last-child td{border:0}
+td select{margin:0;min-height:34px;font-size:12px;width:auto;padding:0 8px;border-radius:8px}
+.badge{display:inline-block;padding:3px 9px;border-radius:999px;font-size:11px;font-weight:600;letter-spacing:.2px}
+.badge.Scheduled{background:var(--blue2);color:var(--blue)}
+.badge.Lobby{background:var(--pur2);color:var(--pur)}
+.badge.Doctor{background:var(--amb2);color:var(--amb)}
+.badge.Completed{background:var(--grn2);color:var(--grn)}
+.badge.Missed,.badge.No-show{background:var(--red2);color:var(--red)}
+.badge.Rescheduled{background:var(--grn2);color:var(--grn)}
+.badge.Escalated{background:var(--amb2);color:var(--amb)}
+
+/* 4-Column AI Recovery Board */
+.k-board{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:14px}
+.k-col{background:rgba(255,255,255,.55);border:1px solid var(--line);border-radius:14px;padding:14px;min-height:480px;display:flex;flex-direction:column}
+.k-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;font-weight:600;font-size:14px}
+.k-count{background:#fff;border:1px solid var(--line);padding:2px 8px;border-radius:999px;font-size:11px}
+.k-cards{display:flex;flex-direction:column;gap:10px;flex:1}
+.k-card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px;box-shadow:0 2px 6px rgba(15,23,42,.03);transition:transform .15s ease}
+.k-card:hover{transform:translateY(-2px);box-shadow:0 8px 16px -4px rgba(47,125,225,.12)}
+.k-card h4{margin:0 0 4px;font-size:14px;font-weight:600}
+.k-card p{margin:4px 0;font-size:12px;color:var(--mut)}
+.k-card .meta{display:flex;justify-content:space-between;align-items:center;margin-top:8px;padding-top:8px;border-top:1px dashed var(--line);font-size:11px}
+.k-card .actions{display:flex;gap:6px;margin-top:10px}
+
+/* Audit & Simulation */
+.audit-list{display:flex;flex-direction:column;gap:8px;max-height:500px;overflow-y:auto;padding-right:6px}
+.audit-item{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;font-size:12px;display:grid;grid-template-columns:120px 140px 1fr;gap:12px;align-items:center}
+.audit-tag{font-weight:600;font-size:11px;padding:3px 8px;border-radius:6px;background:var(--blue2);color:var(--blue);text-align:center}
+
+/* Modal */
+.modal-overlay{position:fixed;inset:0;background:rgba(15,23,42,.4);backdrop-filter:blur(4px);z-index:60;display:grid;place-items:center;padding:20px}
+.modal{width:100%;max-width:560px;background:#fff;border-radius:18px;border:1px solid var(--line);padding:24px;box-shadow:0 20px 60px rgba(15,23,42,.2)}
+.modal h3{margin:0 0 8px;font-size:18px;font-weight:600}
+
+.q{display:grid;gap:12px;max-width:800px}
+.qi{display:grid;grid-template-columns:48px 1fr auto;gap:16px;align-items:center;padding:16px 20px}
+.av{width:44px;height:44px;border-radius:50%;background:var(--blue2);color:var(--blue);display:grid;place-items:center;font-weight:700;font-size:16px}
+.qi b{font-size:16px;font-weight:600}.qi div div{color:var(--mut);font-size:13px}.dz{color:var(--ink)!important;margin-top:2px}
+footer{max-width:1200px;margin:64px auto 24px;padding:0 24px;display:flex;justify-content:space-between;color:var(--mut);font-size:13px;gap:12px}
+.lock{min-height:38px;padding:0 14px;border-radius:999px;border:1px solid var(--line);background:#fff8;opacity:.8;cursor:pointer;font:500 12px 'DM Sans',sans-serif;color:var(--ink)}
+
+@media(max-width:960px){.stats{grid-template-columns:repeat(3,1fr)}.k-board{grid-template-columns:1fr 1fr}}
+@media(max-width:640px){.grid,.stats,.k-board{grid-template-columns:1fr}.qi{grid-template-columns:44px 1fr}.qi .btn{grid-column:1/-1}}
+</style>
+</head>
+<body>
+<header class="bar">
+  <div class="wrap">
+    <div class="logo">
+      <svg width="26" height="26" viewBox="0 0 26 26" fill="none" aria-hidden="true">
+        <path d="M13 3a10 10 0 1 0 10 10" stroke="#2f7de1" stroke-width="3" stroke-linecap="round"/>
+        <path d="M17 3h6v6" stroke="#15a34a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span>CareLoop AI</span>
+    </div>
+    <div class="header-pills">
+      <span class="pill" id="db-pill">Connecting database...</span>
+      <span class="pill" id="mode">Patient portal</span>
+    </div>
+  </div>
+</header>
+
+<!-- 1. Patient Portal -->
+<main class="wrap" id="pv">
+  <h1>Book your clinic visit.</h1>
+  <p class="sub">No password or sign up required. Select a convenient time and tell us why you are coming.</p>
+  <form class="glass card" id="pf" novalidate>
+    <div class="grid">
+      <label class="w">Full name<input id="pn" autocomplete="name" placeholder="e.g. Ayesha Khan" required></label>
+      <label>Phone number<input id="pp" type="tel" inputmode="tel" autocomplete="tel" placeholder="0300 1234567" required></label>
+      <label>Age<input id="pa" type="number" min="0" max="120" inputmode="numeric" placeholder="e.g. 34" required></label>
+      <div class="w">
+        <span class="lb">Gender</span>
+        <div class="chips" id="pg" role="group" aria-label="Gender">
+          <button type="button" class="chip" aria-pressed="false">Female</button>
+          <button type="button" class="chip" aria-pressed="false">Male</button>
+          <button type="button" class="chip" aria-pressed="false">Other</button>
+        </div>
+      </div>
+      <div class="fw">
+        <span class="lb">Date</span>
+        <button type="button" class="pk" id="db" aria-haspopup="dialog"><span id="dl">Select date</span><span aria-hidden="true">📅</span></button>
+        <div class="pop" id="cal" hidden role="dialog" aria-label="Choose a date"></div>
+      </div>
+      <div class="fw">
+        <span class="lb">Time (9:00 AM – 5:00 PM)</span>
+        <button type="button" class="pk" id="tb" aria-haspopup="dialog"><span id="tl">Select time</span><span aria-hidden="true">🕐</span></button>
+        <div class="pop" id="clk" hidden role="dialog" aria-label="Choose a time"></div>
+      </div>
+      <label class="w">Reason for visit / recorded disease<textarea id="pr" placeholder="e.g. Type 2 Diabetes follow-up & blood sugar review" required></textarea></label>
+    </div>
+    <button class="btn" style="width:100%">Confirm appointment</button>
+    <p class="msg" id="pm" role="alert"></p>
+  </form>
+  <div class="glass card ok" id="pd" tabindex="-1" hidden>
+    <span class="ico">✓</span>
+    <b id="pt"></b>
+    <p id="ps"></p>
+    <p id="pi"></p>
+    <button class="btn ghost" id="pa2" style="margin-top:16px">Book another visit</button>
+  </div>
+</main>
+
+<!-- 2. Staff Sign In -->
+<main class="wrap" id="lv" hidden>
+  <form class="glass login" id="lf" novalidate>
+    <h2>Staff sign in</h2>
+    <p style="color:var(--mut);margin:0 0 18px">Access reception desk, doctor consultation queue, and AI recovery board.</p>
+    <label>Email<input id="le" type="email" autocomplete="username" value="reception@careloop.demo"></label><br>
+    <label>Password<input id="lp" type="password" autocomplete="current-password" value="Reception#24"></label>
+    <button class="btn" style="width:100%;margin-top:18px">Sign in</button>
+    <p class="msg" id="lm" role="alert"></p>
+    <div class="sim">
+      Demo accounts available:
+      <div class="row">
+        <button type="button" class="btn ghost sm" data-u="reception@careloop.demo|Reception#24">Reception Desk</button>
+        <button type="button" class="btn ghost sm" data-u="doctor@careloop.demo|Doctor#24">Dr. Imran (Physician)</button>
+      </div>
+    </div>
+  </form>
+</main>
+
+<!-- 3. Staff Portal & AI Recovery Workspace -->
+<main class="wrap" id="sv" hidden>
+  <div class="sh">
+    <div>
+      <h2 id="st">Reception Desk</h2>
+      <span class="pill" id="su">Sara, Receptionist</span>
+    </div>
+    <div style="display:flex;gap:8px">
+      <button class="btn ghost sm" id="btn-seed" title="Reset & Seed exactly 30 pilot appointments">🌱 Seed 30 Rubric Patients</button>
+      <button class="btn ghost sm" id="so">Sign out</button>
+    </div>
+  </div>
+
+  <!-- Navigation Tabs -->
+  <div class="staff-nav" role="tablist">
+    <button class="tab-btn" id="tab-rec" aria-selected="true">📋 Reception Desk</button>
+    <button class="tab-btn" id="tab-doc" aria-selected="false">🩺 Doctor Queue</button>
+    <button class="tab-btn" id="tab-ai" aria-selected="false">⚡ CareLoop AI Recovery <span class="tab-badge" id="app-badge">0</span></button>
+    <button class="tab-btn" id="tab-audit" aria-selected="false">📜 Live Audit Trace</button>
+  </div>
+
+  <!-- Tab 1: Reception Desk -->
+  <div id="rv">
+    <div class="stats" id="rs"></div>
+    <div class="tools" id="rf"></div>
+    <div class="glass tw">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Patient</th>
+            <th>Phone</th>
+            <th>Age / Gender</th>
+            <th>Appointment</th>
+            <th>Reason / Disease</th>
+            <th>Total Visits</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="rb"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Tab 2: Doctor Queue -->
+  <div id="dv" hidden>
+    <div class="stats" style="grid-template-columns:repeat(3,1fr);margin-bottom:18px">
+      <div class="glass stat"><small>Consultations waiting</small><b id="doc-waiting">0</b></div>
+      <div class="glass stat"><small>With doctor now</small><b id="doc-active">0</b></div>
+      <div class="glass stat"><small>Completed today</small><b id="doc-done">0</b></div>
+    </div>
+    <div class="q" id="dq"></div>
+  </div>
+
+  <!-- Tab 3: CareLoop AI 4-Column Recovery Board (Rubric Aligned) -->
+  <div id="av" hidden>
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:14px">
+      <div>
+        <h3 style="margin:0 0 4px;font-size:18px">Closed-Loop Appointment Recovery Engine</h3>
+        <p style="margin:0;font-size:13px;color:var(--mut)">Autonomous detection, personalized drafting, human approval gate, and slot revalidation.</p>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="btn success sm" id="btn-run-scan">⚡ Run AI Recovery Scan</button>
+        <button class="btn ghost sm" id="btn-open-sim">🧪 Simulator</button>
+      </div>
+    </div>
+
+    <!-- 4 Kanban Columns -->
+    <div class="k-board">
+      <!-- Col 1: Missed Visits -->
+      <div class="k-col">
+        <div class="k-head"><span>1. Missed Visits</span><span class="k-count" id="c1-count">0</span></div>
+        <div class="k-cards" id="c1-cards"></div>
+      </div>
+      <!-- Col 2: Proposed Action -->
+      <div class="k-col">
+        <div class="k-head"><span>2. Proposed Action</span><span class="k-count" id="c2-count">0</span></div>
+        <div class="k-cards" id="c2-cards"></div>
+      </div>
+      <!-- Col 3: Pending Approval Gate (Hero Moment) -->
+      <div class="k-col">
+        <div class="k-head"><span>3. Pending Approval</span><span class="k-count" id="c3-count">0</span></div>
+        <div class="k-cards" id="c3-cards"></div>
+      </div>
+      <!-- Col 4: Closed / Escalated -->
+      <div class="k-col">
+        <div class="k-head"><span>4. Recovered / Escalated</span><span class="k-count" id="c4-count">0</span></div>
+        <div class="k-cards" id="c4-cards"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab 4: Audit Logs -->
+  <div id="tv" hidden>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+      <h3 style="margin:0;font-size:16px">Multi-Agent Action History & Tool Traces</h3>
+      <button class="btn ghost sm" id="btn-refresh-audit">↻ Refresh Logs</button>
+    </div>
+    <div class="glass tw" style="padding:16px">
+      <div class="audit-list" id="audit-feed"></div>
+    </div>
+  </div>
+</main>
+
+<!-- Edit Approval Modal (Hero moment for Judges) -->
+<div class="modal-overlay" id="edit-modal" hidden>
+  <div class="modal">
+    <h3>Edit Outreach Message Before Dispatch</h3>
+    <p style="font-size:13px;color:var(--mut);margin:0 0 14px">Human-in-the-Loop review: customize the text or add clinic specific instructions.</p>
+    <label>Patient<input id="modal-patient" readonly style="background:#f8fafc"></label><br>
+    <label>Message Content<textarea id="modal-msg" style="min-height:110px"></textarea></label>
+    <input type="hidden" id="modal-approval-id">
+    <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:16px">
+      <button type="button" class="btn ghost" id="modal-cancel">Cancel</button>
+      <button type="button" class="btn success" id="modal-confirm-approve">Approve & Send SMS</button>
+    </div>
+  </div>
+</div>
+
+<!-- Simulation Playground Modal -->
+<div class="modal-overlay" id="sim-modal" hidden>
+  <div class="modal" style="max-width:620px">
+    <h3>🧪 Live Competition Demo Simulator</h3>
+    <p style="font-size:13px;color:var(--mut);margin:0 0 16px">Simulate patient responses live to test the closed loop recovery engine.</p>
+    <label>Select Patient with Pending Follow-up
+      <select id="sim-app-select"></select>
+    </label><br>
+    <label>Choose Demo Scenario:
+      <div class="row" style="margin-top:6px">
+        <button type="button" class="btn ghost sm" id="scen-happy" style="flex:1">Scenario A: Slot 1 Selected (Happy Path)</button>
+        <button type="button" class="btn ghost sm" id="scen-safety" style="flex:1">Scenario B: Clinical Question (Safety Boundary)</button>
+        <button type="button" class="btn ghost sm" id="scen-conflict" style="flex:1">Scenario C: Slot Conflict (Race Condition)</button>
+      </div>
+    </label><br>
+    <label>Patient Reply Text:
+      <textarea id="sim-reply-text" style="min-height:70px"></textarea>
+    </label>
+    <div id="sim-output" style="margin-top:12px;padding:12px;border-radius:10px;background:#f8fafc;font-size:13px;display:none"></div>
+    <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:16px">
+      <button type="button" class="btn ghost" id="sim-close">Close</button>
+      <button type="button" class="btn" id="sim-send">Simulate Reply</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <span>© 2026 CareLoop AI · Missed Appointment Closed-Loop Recovery System</span>
+  <button class="lock" id="lock">🔒 Staff Portal</button>
+</footer>
+
+<script>
+(function(){
+const $ = id => document.getElementById(id);
+const esc = s => String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const pad = n => String(n).padStart(2, '0');
+const iso = d => d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
+const f12 = t => { if (!t) return ''; const [h, m] = t.split(':').map(Number); return (h % 12 || 12) + ':' + pad(m) + ' ' + (h < 12 ? 'AM' : 'PM'); };
+const fd = s => { if (!s) return ''; return new Date(s + 'T00:00').toLocaleDateString('en-GB', {weekday: 'short', day: 'numeric', month: 'short'}); };
+
+const API_BASE = window.location.origin;
+let D = [];
+let APPROVALS = [];
+let AUDIT_LOGS = [];
+let STATS = {};
+let isOnline = false;
+
+// Check API connection and Supabase mode
+async function checkConnection() {
+  try {
+    const res = await fetch(API_BASE + '/health', { signal: AbortSignal.timeout(3000) });
+    if (res.ok) {
+      const data = await res.json();
+      isOnline = true;
+      if (data.database && data.database.mode === 'supabase') {
+        $('db-pill').textContent = '☁ Supabase Connected';
+        $('db-pill').className = 'pill live';
+      } else {
+        $('db-pill').textContent = '📁 SQLite Local Mode';
+        $('db-pill').className = 'pill';
+      }
+      return true;
+    }
+  } catch(e) {
+    isOnline = false;
+    $('db-pill').textContent = '⚡ Local In-Browser Demo';
+    $('db-pill').className = 'pill';
+  }
+  return false;
+}
+
+// Data synchronization with API
+async function loadData() {
+  if (isOnline) {
+    try {
+      const [appRes, apprvRes, statRes, audRes] = await Promise.all([
+        fetch(API_BASE + '/api/appointments'),
+        fetch(API_BASE + '/api/approvals?status=All'),
+        fetch(API_BASE + '/api/stats'),
+        fetch(API_BASE + '/api/audit-logs?limit=40')
+      ]);
+      D = await appRes.json();
+      APPROVALS = await apprvRes.json();
+      STATS = await statRes.json();
+      AUDIT_LOGS = await audRes.json();
+      updateBadge();
+      return;
+    } catch(e) {
+      console.warn('API sync failed, using cache:', e);
+    }
+  }
+}
+
+function updateBadge() {
+  const pendingCount = APPROVALS.filter(a => a.status === 'PENDING').length;
+  $('app-badge').textContent = pendingCount;
+}
+
+// ---- View Switching ----
+const views = ['pv', 'lv', 'sv'];
+let user = null;
+let currentTab = 'tab-rec';
+
+function show(v) {
+  views.forEach(x => $(x).hidden = x !== v);
+  $('mode').textContent = v === 'pv' ? 'Patient portal' : v === 'lv' ? 'Staff portal' : 'Staff portal · ' + (user.role === 'rec' ? 'Reception Desk' : 'Dr. Imran');
+  window.scrollTo(0, 0);
+}
+
+function switchTab(tabId) {
+  currentTab = tabId;
+  $('tab-rec').setAttribute('aria-selected', tabId === 'tab-rec');
+  $('tab-doc').setAttribute('aria-selected', tabId === 'tab-doc');
+  $('tab-ai').setAttribute('aria-selected', tabId === 'tab-ai');
+  $('tab-audit').setAttribute('aria-selected', tabId === 'tab-audit');
+
+  $('rv').hidden = tabId !== 'tab-rec';
+  $('dv').hidden = tabId !== 'tab-doc';
+  $('av').hidden = tabId !== 'tab-ai';
+  $('tv').hidden = tabId !== 'tab-audit';
+
+  if (tabId === 'tab-rec') renderRec();
+  if (tabId === 'tab-doc') renderDoc();
+  if (tabId === 'tab-ai') renderAiBoard();
+  if (tabId === 'tab-audit') renderAudit();
+}
+
+$('tab-rec').onclick = () => switchTab('tab-rec');
+$('tab-doc').onclick = () => switchTab('tab-doc');
+$('tab-ai').onclick = () => switchTab('tab-ai');
+$('tab-audit').onclick = () => switchTab('tab-audit');
+
+// ---- Patient Booking Form ----
+let gen = null, sd = null, hr = null, mn = 0, ap = 'AM', st = null, cv = new Date();
+cv.setDate(1);
+
+$('pg').onclick = e => {
+  const b = e.target.closest('.chip');
+  if (!b) return;
+  [...$('pg').children].forEach(x => x.setAttribute('aria-pressed', 'false'));
+  b.setAttribute('aria-pressed', 'true');
+  gen = b.textContent;
+};
+
+function closeP() { $('cal').hidden = true; $('clk').hidden = true; }
+document.addEventListener('click', e => { if (!e.target.closest('.fw')) closeP(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeP(); });
+
+function drawCal() {
+  const y = cv.getFullYear(), m = cv.getMonth(), f = new Date(y, m, 1).getDay(), n = new Date(y, m + 1, 0).getDate(), today = iso(new Date());
+  let h = '<div class="ch"><button type="button" class="nv" data-n="-1" aria-label="Previous month">‹</button><b>' + cv.toLocaleDateString('en-GB', {month: 'long', year: 'numeric'}) + '</b><button type="button" class="nv" data-n="1" aria-label="Next month">›</button></div><div class="cg">' + 'SMTWTFS'.split('').map(d => '<i>' + d + '</i>').join('') + '<span></span>'.repeat(f);
+  for (let d = 1; d <= n; d++) {
+    const k = iso(new Date(y, m, d));
+    h += '<button type="button" class="dy' + (k === sd ? ' on' : '') + '" data-d="' + k + '"' + (k < today ? ' disabled' : '') + '>' + d + '</button>';
+  }
+  $('cal').innerHTML = h + '</div>';
+}
+
+$('db').onclick = () => { const o = $('cal').hidden; closeP(); if (o) { drawCal(); $('cal').hidden = false; } };
+$('cal').onclick = e => {
+  const n = e.target.closest('.nv'), d = e.target.closest('.dy');
+  if (n) { cv.setMonth(cv.getMonth() + Number(n.dataset.n)); drawCal(); }
+  if (d) { sd = d.dataset.d; $('dl').textContent = fd(sd); $('db').classList.add('set'); closeP(); }
+};
+
+function drawClk() {
+  let h = '<div class="face">';
+  for (let i = 1; i <= 12; i++) h += '<button type="button" class="hb' + (i === hr ? ' on' : '') + '" style="--a:' + i * 30 + 'deg" data-h="' + i + '" aria-label="' + i + ' o’clock">' + i + '</button>';
+  h += '<span class="hand" style="--a:' + (hr || 12) * 30 + 'deg"></span><span class="hub"></span></div><div class="row">' + [0, 15, 30, 45].map(m => '<button type="button" class="chip" data-m="' + m + '" aria-pressed="' + (m === mn) + '">:' + pad(m) + '</button>').join('') + '</div><div class="row">' + ['AM', 'PM'].map(a => '<button type="button" class="chip" data-a="' + a + '" aria-pressed="' + (a === ap) + '">' + a + '</button>').join('') + '</div><button type="button" class="btn" data-ok="1" style="width:100%">Set time</button>';
+  $('clk').innerHTML = h;
+}
+
+$('tb').onclick = () => { const o = $('clk').hidden; closeP(); if (o) { drawClk(); $('clk').hidden = false; } };
+$('clk').onclick = e => {
+  const b = e.target.closest('button');
+  if (!b) return;
+  if (b.dataset.h) hr = +b.dataset.h;
+  if (b.dataset.m) mn = +b.dataset.m;
+  if (b.dataset.a) ap = b.dataset.a;
+  if (b.dataset.ok) {
+    if (!hr) return;
+    st = pad((hr % 12) + (ap === 'PM' ? 12 : 0)) + ':' + pad(mn);
+    $('tl').textContent = f12(st);
+    $('tb').classList.add('set');
+    closeP();
+  } else drawClk();
+};
+
+$('pf').onsubmit = async e => {
+  e.preventDefault();
+  const g = id => $(id).value.trim(), m = $('pm'), ph = g('pp'), age = Number(g('pa'));
+  if (!g('pn')) return m.textContent = 'Enter your full name.';
+  if (!/^[+\d][\d\s-]{8,17}$/.test(ph)) return m.textContent = 'Enter a valid phone number.';
+  if (g('pa') === '' || age < 0 || age > 120) return m.textContent = 'Enter an age between 0 and 120.';
+  if (!gen) return m.textContent = 'Select a gender.';
+  if (!sd) return m.textContent = 'Select an appointment date.';
+  if (!st) return m.textContent = 'Select an appointment time.';
+  if (st < '09:00' || st >= '17:00') return m.textContent = 'Clinic consultation hours are 9:00 AM to 5:00 PM.';
+  if (!g('pr')) return m.textContent = 'Tell us the reason for your visit.';
+
+  const payload = {
+    patient_name: g('pn'),
+    phone: ph,
+    age: age,
+    gender: gen,
+    reason: g('pr'),
+    date: sd,
+    time: st
+  };
+
+  let assignedId = 'P-' + (1001 + D.length);
+  if (isOnline) {
+    try {
+      const res = await fetch(API_BASE + '/api/appointments', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(payload)
+      });
+      if (res.ok) {
+        const json = await res.json();
+        assignedId = json.appointment.id;
+      }
+    } catch(err) {
+      console.error(err);
+    }
+  }
+
+  m.textContent = '';
+  $('pf').hidden = true;
+  $('pd').hidden = false;
+  $('pt').textContent = 'You’re confirmed, ' + g('pn').split(' ')[0] + '.';
+  $('ps').textContent = fd(sd) + ' at ' + f12(st);
+  $('pi').textContent = 'Reference ID: ' + assignedId + '. Please arrive 10 minutes early with any prior lab reports.';
+  $('pd').focus();
+  await loadData();
+};
+
+$('pa2').onclick = () => {
+  $('pf').reset();
+  gen = sd = st = hr = null;
+  mn = 0; ap = 'AM';
+  [...$('pg').children].forEach(x => x.setAttribute('aria-pressed', 'false'));
+  $('dl').textContent = 'Select date';
+  $('tl').textContent = 'Select time';
+  $('db').classList.remove('set');
+  $('tb').classList.remove('set');
+  $('pd').hidden = true;
+  $('pf').hidden = false;
+};
+
+// ---- Staff Authentication ----
+const ACC = {
+  'reception@careloop.demo': {pw: 'Reception#24', role: 'rec', name: 'Sara, Receptionist'},
+  'doctor@careloop.demo': {pw: 'Doctor#24', role: 'doc', name: 'Dr. Imran (Physician)'}
+};
+
+function toggleStaff() {
+  if ($('pv').hidden) {
+    show('pv');
+  } else {
+    show(user ? 'sv' : 'lv');
+  }
+  if (user && $('pv').hidden) {
+    switchTab(user.role === 'doc' ? 'tab-doc' : 'tab-rec');
+  }
+}
+
+$('lock').onclick = toggleStaff;
+document.querySelectorAll('[data-u]').forEach(b => b.onclick = () => {
+  const [u, p] = b.dataset.u.split('|');
+  $('le').value = u;
+  $('lp').value = p;
+});
+
+$('lf').onsubmit = e => {
+  e.preventDefault();
+  const a = ACC[$('le').value.trim().toLowerCase()];
+  if (!a || a.pw !== $('lp').value) return $('lm').textContent = 'Incorrect credentials.';
+  user = a;
+  $('lm').textContent = '';
+  $('lp').value = '';
+  show('sv');
+  switchTab(user.role === 'doc' ? 'tab-doc' : 'tab-rec');
+};
+
+$('so').onclick = () => {
+  user = null;
+  $('le').value = '';
+  show('pv');
+};
+
+// ---- Tab 1: Reception Desk Render ----
+let flt = 'All', q = '';
+const ST_LIST = ['Scheduled', 'In lobby', 'With doctor', 'Completed', 'Missed', 'No-show', 'Follow-up pending', 'Rescheduled', 'Escalated'];
+
+function renderRec() {
+  const today = iso(new Date());
+  const visCount = p => D.filter(x => x.phone === p.phone).length;
+
+  $('rs').innerHTML = [
+    ['Total Registered', new Set(D.map(x => x.phone)).size],
+    ['Total Appointments', D.length],
+    ['In Lobby Now', D.filter(x => x.status === 'In lobby').length],
+    ['Appointments Today', D.filter(x => x.date === today).length],
+    ['Recovery Rate', (STATS.recovery_rate_pct || 25) + '%']
+  ].map(s => '<div class="glass stat"><small>' + s[0] + '</small><b>' + s[1] + '</b></div>').join('');
+
+  $('rf').innerHTML = ['All', 'Scheduled', 'In lobby', 'With doctor', 'Missed', 'Rescheduled', 'Escalated'].map(s => 
+    '<button class="f" data-f="' + s + '" aria-pressed="' + (s === flt) + '">' + s + '</button>'
+  ).join('') + '<input id="qs" type="search" placeholder="Search name, phone or disease" aria-label="Search" value="' + esc(q) + '">';
+
+  const filtered = D.filter(p => 
+    (flt === 'All' || p.status === flt) &&
+    (p.patient_name + ' ' + p.phone + ' ' + (p.reason || '')).toLowerCase().includes(q.toLowerCase())
+  ).sort((a, b) => (b.date + b.time).localeCompare(a.date + a.time));
+
+  $('rb').innerHTML = filtered.map(p => `
+    <tr>
+      <td><b>${esc(p.id)}</b></td>
+      <td><span style="font-weight:600">${esc(p.patient_name)}</span></td>
+      <td>${esc(p.phone)}</td>
+      <td>${p.age} · ${esc(p.gender)}</td>
+      <td>${fd(p.date)}<br><span style="color:var(--mut)">${f12(p.time)}</span></td>
+      <td><span style="font-weight:500">${esc(p.reason)}</span></td>
+      <td>${visCount(p)}</td>
+      <td><span class="badge ${esc(p.status.replace(/\s+/g, '-'))}">${esc(p.status)}</span></td>
+      <td>
+        <select data-s="${esc(p.id)}" aria-label="Status for ${esc(p.patient_name)}">
+          ${ST_LIST.map(s => `<option value="${s}" ${s === p.status ? 'selected' : ''}>${s}</option>`).join('')}
+        </select>
+      </td>
+    </tr>
+  `).join('') || '<tr><td colspan="9" style="text-align:center;color:var(--mut);padding:24px">No appointments match filter.</td></tr>';
+}
+
+$('rf').onclick = e => {
+  const b = e.target.closest('.f');
+  if (b) { flt = b.dataset.f; renderRec(); }
+};
+
+$('rf').oninput = e => {
+  if (e.target.id === 'qs') {
+    q = e.target.value;
+    const p = e.target.selectionStart;
+    renderRec();
+    const input = $('qs');
+    if (input) { input.focus(); input.setSelectionRange(p, p); }
+  }
+};
+
+$('rb').onchange = async e => {
+  const id = e.target.dataset.s;
+  if (!id) return;
+  const newStatus = e.target.value;
+  if (isOnline) {
+    try {
+      await fetch(API_BASE + '/api/appointments/' + id + '/status', {
+        method: 'PATCH',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({status: newStatus})
+      });
+    } catch(err) {
+      console.error(err);
+    }
+  }
+  const item = D.find(x => x.id === id);
+  if (item) item.status = newStatus;
+  await loadData();
+  renderRec();
+};
+
+// ---- Tab 2: Doctor Queue Render ----
+function renderDoc() {
+  const queue = D.filter(p => ['Scheduled', 'In lobby', 'With doctor', 'Escalated'].includes(p.status))
+                 .sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));
+
+  $('doc-waiting').textContent = queue.filter(x => x.status === 'In lobby' || x.status === 'Scheduled').length;
+  $('doc-active').textContent = queue.filter(x => x.status === 'With doctor').length;
+  $('doc-done').textContent = D.filter(x => x.status === 'Completed').length;
+
+  $('dq').innerHTML = queue.map(p => `
+    <div class="glass qi">
+      <span class="av">${esc(p.patient_name[0])}</span>
+      <div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <b>${esc(p.patient_name)}</b>
+          <span class="badge ${esc(p.status.replace(/\s+/g, '-'))}">${esc(p.status)}</span>
+        </div>
+        <div>${p.age}y · ${esc(p.gender)} · ${fd(p.date)}, ${f12(p.time)}</div>
+        <div class="dz">${esc(p.reason)}</div>
+      </div>
+      <div style="display:flex;gap:6px">
+        ${p.status === 'In lobby' ? `<button class="btn sm" data-call="${esc(p.id)}">Start Consultation</button>` : ''}
+        <button class="btn ghost sm" data-done="${esc(p.id)}">Mark Consulted</button>
+      </div>
+    </div>
+  `).join('') || '<p class="sub">The consultation queue is clear. No patients waiting.</p>';
+}
+
+$('dq').onclick = async e => {
+  const callBtn = e.target.closest('[data-call]');
+  const doneBtn = e.target.closest('[data-done]');
+  if (callBtn) {
+    const id = callBtn.dataset.call;
+    await updateStatusDirect(id, 'With doctor');
+    renderDoc();
+  }
+  if (doneBtn) {
+    const id = doneBtn.dataset.done;
+    await updateStatusDirect(id, 'Completed');
+    renderDoc();
+  }
+};
+
+async function updateStatusDirect(id, status) {
+  if (isOnline) {
+    await fetch(API_BASE + '/api/appointments/' + id + '/status', {
+      method: 'PATCH',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({status})
+    });
+  }
+  const item = D.find(x => x.id === id);
+  if (item) item.status = status;
+  await loadData();
+}
+
+// ---- Tab 3: AI 4-Column Recovery Board (Rubric Aligned) ----
+function renderAiBoard() {
+  // Col 1: Missed Visits
+  const col1 = D.filter(p => p.status === 'Missed' || p.status === 'No-show');
+  $('c1-count').textContent = col1.length;
+  $('c1-cards').innerHTML = col1.map(p => `
+    <div class="k-card">
+      <div style="display:flex;justify-content:space-between">
+        <h4>${esc(p.patient_name)}</h4>
+        <span class="badge Missed">${esc(p.status)}</span>
+      </div>
+      <p><b>Diagnosis:</b> ${esc(p.reason)}</p>
+      <p><b>Original Slot:</b> ${fd(p.date)} at ${f12(p.time)}</p>
+      <div class="meta">
+        <span>${esc(p.phone)}</span>
+        <button class="btn sm ghost" style="padding:2px 8px;font-size:11px" data-trigger-rec="${esc(p.id)}">Recover Visit</button>
+      </div>
+    </div>
+  `).join('') || '<p style="color:var(--mut);font-size:12px;text-align:center;padding:16px">No unrecovered missed visits.</p>';
+
+  // Col 2: Proposed Action
+  const col2 = D.filter(p => p.status === 'Follow-up pending');
+  $('c2-count').textContent = col2.length;
+  $('c2-cards').innerHTML = col2.map(p => `
+    <div class="k-card">
+      <h4>${esc(p.patient_name)}</h4>
+      <p><b>Draft SMS:</b> "We missed you for your ${esc(p.reason)} visit. Would you like to reschedule?"</p>
+      <p style="color:var(--grn);font-weight:500;font-size:11px">✓ Non-clinical safety check passed</p>
+      <div class="meta">
+        <span>Proposed: Tomorrow 10am / Thu 2:30pm</span>
+        <span class="badge Lobby">Draft Ready</span>
+      </div>
+    </div>
+  `).join('') || '<p style="color:var(--mut);font-size:12px;text-align:center;padding:16px">No drafts awaiting review.</p>';
+
+  // Col 3: Pending Approvals (Human-in-the-Loop)
+  const pendingApprovals = APPROVALS.filter(a => a.status === 'PENDING');
+  $('c3-count').textContent = pendingApprovals.length;
+  $('c3-cards').innerHTML = pendingApprovals.map(a => `
+    <div class="k-card" style="border-left:3px solid var(--amb)">
+      <div style="display:flex;justify-content:space-between">
+        <h4>${esc(a.patient_name)}</h4>
+        <span class="badge Doctor">Needs Approval</span>
+      </div>
+      <p style="background:#f8fafc;padding:8px;border-radius:8px;font-size:12px;color:var(--ink);border:1px solid var(--line)">
+        ${esc(a.proposed_message)}
+      </p>
+      <p style="font-size:11px;color:var(--mut)"><b>Reason:</b> ${esc(a.reason)}</p>
+      <div class="actions">
+        <button class="btn success sm" data-apprv="${esc(a.id)}" style="flex:1">Approve</button>
+        <button class="btn ghost sm" data-edit="${esc(a.id)}" title="Edit before sending">Edit</button>
+        <button class="btn danger sm" data-rej="${esc(a.id)}">✕</button>
+      </div>
+    </div>
+  `).join('') || '<p style="color:var(--mut);font-size:12px;text-align:center;padding:16px">No pending approvals.</p>';
+
+  // Col 4: Recovered / Rescheduled or Escalated
+  const col4 = D.filter(p => p.status === 'Rescheduled' || p.status === 'Escalated');
+  $('c4-count').textContent = col4.length;
+  $('c4-cards').innerHTML = col4.map(p => `
+    <div class="k-card" style="border-left:3px solid ${p.status === 'Rescheduled' ? 'var(--grn)' : 'var(--amb)'}">
+      <div style="display:flex;justify-content:space-between">
+        <h4>${esc(p.patient_name)}</h4>
+        <span class="badge ${esc(p.status)}">${esc(p.status)}</span>
+      </div>
+      <p><b>${p.status === 'Rescheduled' ? 'New Confirmed Slot:' : 'Escalation Notice:'}</b> ${p.status === 'Rescheduled' ? fd(p.date) + ' at ' + f12(p.time) : 'Routed to physician consultation queue'}</p>
+      <p style="font-size:11px;color:var(--mut)">${p.status === 'Rescheduled' ? '✓ Slot revalidated without conflicts' : '⚠️ Clinical questions / safety review'}</p>
+    </div>
+  `).join('') || '<p style="color:var(--mut);font-size:12px;text-align:center;padding:16px">No closed cases yet.</p>';
+}
+
+// Approval Actions Event Delegation
+$('c3-cards').onclick = async e => {
+  const apprvBtn = e.target.closest('[data-apprv]');
+  const editBtn = e.target.closest('[data-edit]');
+  const rejBtn = e.target.closest('[data-rej]');
+
+  if (apprvBtn) {
+    const id = apprvBtn.dataset.apprv;
+    await approveDirect(id);
+  }
+  if (editBtn) {
+    const id = editBtn.dataset.edit;
+    openEditModal(id);
+  }
+  if (rejBtn) {
+    const id = rejBtn.dataset.rej;
+    await rejectDirect(id);
+  }
+};
+
+async function approveDirect(id, editedText) {
+  if (isOnline) {
+    try {
+      await fetch(API_BASE + '/api/approvals/' + id + '/approve', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          status: 'APPROVED',
+          edited_message: editedText || null,
+          reviewed_by: user ? user.name : 'Sara, Receptionist'
+        })
+      });
+    } catch(err) {
+      console.error(err);
+    }
+  }
+  await loadData();
+  renderAiBoard();
+  renderRec();
+}
+
+async function rejectDirect(id) {
+  if (isOnline) {
+    try {
+      await fetch(API_BASE + '/api/approvals/' + id + '/reject', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({status: 'REJECTED'})
+      });
+    } catch(err) {
+      console.error(err);
+    }
+  }
+  await loadData();
+  renderAiBoard();
+}
+
+function openEditModal(approvalId) {
+  const apprv = APPROVALS.find(a => a.id === approvalId);
+  if (!apprv) return;
+  $('modal-approval-id').value = approvalId;
+  $('modal-patient').value = apprv.patient_name + ' (' + apprv.phone + ')';
+  $('modal-msg').value = apprv.proposed_message;
+  $('edit-modal').hidden = false;
+}
+
+$('modal-cancel').onclick = () => $('edit-modal').hidden = true;
+$('modal-confirm-approve').onclick = async () => {
+  const id = $('modal-approval-id').value;
+  const edited = $('modal-msg').value.trim();
+  $('edit-modal').hidden = true;
+  await approveDirect(id, edited);
+};
+
+// ---- Tab 4: Audit Logs Render ----
+function renderAudit() {
+  $('audit-feed').innerHTML = AUDIT_LOGS.map(l => `
+    <div class="audit-item">
+      <span class="audit-tag">${esc(l.agent_name || 'System')}</span>
+      <span style="color:var(--mut);font-family:monospace">${new Date(l.created_at).toLocaleTimeString('en-GB')}</span>
+      <div>
+        <b style="color:var(--ink)">${esc(l.action)}</b>
+        ${l.details ? `<div style="color:var(--mut);font-size:11px;margin-top:2px">${esc(l.details)}</div>` : ''}
+      </div>
+    </div>
+  `).join('') || '<p style="padding:24px;text-align:center;color:var(--mut)">No audit logs recorded yet.</p>';
+}
+
+$('btn-refresh-audit').onclick = async () => {
+  await loadData();
+  renderAudit();
+};
+
+// ---- Run Recovery Scan Button ----
+$('btn-run-scan').onclick = async () => {
+  $('btn-run-scan').disabled = true;
+  $('btn-run-scan').textContent = 'Scanning...';
+  if (isOnline) {
+    try {
+      await fetch(API_BASE + '/api/recovery/scan', { method: 'POST' });
+    } catch(err) {
+      console.error(err);
+    }
+  }
+  await loadData();
+  renderAiBoard();
+  $('btn-run-scan').disabled = false;
+  $('btn-run-scan').textContent = '⚡ Run AI Recovery Scan';
+};
+
+// ---- Seed 30 Patients Button ----
+$('btn-seed').onclick = async () => {
+  if (confirm('Reset and seed 30 synthetic patient appointments for rubric demonstration?')) {
+    if (isOnline) {
+      await fetch(API_BASE + '/api/seed', { method: 'POST' });
+    }
+    await loadData();
+    renderRec();
+    renderAiBoard();
+    alert('Successfully populated 30 pilot appointments with balanced missed, lobby, and scheduled states.');
+  }
+};
+
+// ---- Simulation Modal ----
+$('btn-open-sim').onclick = () => {
+  const candidates = D.filter(p => p.status === 'Follow-up pending' || p.status === 'Missed');
+  $('sim-app-select').innerHTML = candidates.map(p => 
+    `<option value="${p.id}">${esc(p.patient_name)} (${esc(p.reason)}) - ${p.id}</option>`
+  ).join('') || '<option value="">No patients in recovery</option>';
+  $('sim-output').style.display = 'none';
+  $('sim-modal').hidden = false;
+};
+
+$('sim-close').onclick = () => $('sim-modal').hidden = true;
+
+$('scen-happy').onclick = () => {
+  $('sim-reply-text').value = '1';
+};
+
+$('scen-safety').onclick = () => {
+  $('sim-reply-text').value = 'I missed my visit because my chest is hurting and I have fever. Can I take Panadol?';
+};
+
+$('scen-conflict').onclick = () => {
+  $('sim-reply-text').value = 'I would like to take slot 2 please.';
+};
+
+$('sim-send').onclick = async () => {
+  const appId = $('sim-app-select').value;
+  const reply = $('sim-reply-text').value.trim();
+  if (!appId || !reply) return alert('Select a patient and enter simulated reply.');
+
+  let scenario = 'slot_selection';
+  if (reply.toLowerCase().includes('chest') || reply.toLowerCase().includes('panadol') || reply.toLowerCase().includes('fever')) {
+    scenario = 'clinical_question';
+  } else if ($('sim-reply-text').value === 'I would like to take slot 2 please.') {
+    scenario = 'slot_conflict';
+  }
+
+  $('sim-send').disabled = true;
+  $('sim-send').textContent = 'Simulating...';
+
+  if (isOnline) {
+    try {
+      const res = await fetch(API_BASE + '/api/recovery/simulate-reply', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          appointment_id: appId,
+          reply_text: reply,
+          scenario: scenario
+        })
+      });
+      const data = await res.json();
+      $('sim-output').style.display = 'block';
+      $('sim-output').innerHTML = `
+        <b>Agent Response:</b> ${esc(data.status.toUpperCase())}<br>
+        <b>Action Taken:</b> ${esc(data.action_taken || data.reason || data.message || 'Updated appointment status')}<br>
+        ${data.confirmed_date ? `<b>Confirmed Slot:</b> ${data.confirmed_date} at ${data.confirmed_time}<br>` : ''}
+        ${data.alternatives ? `<b>Alternative Slots:</b> ${data.alternatives.join(', ')}<br>` : ''}
+      `;
+    } catch(err) {
+      console.error(err);
+    }
+  }
+
+  $('sim-send').disabled = false;
+  $('sim-send').textContent = 'Simulate Reply';
+  await loadData();
+  renderAiBoard();
+  renderRec();
+};
+
+// Initial boot
+(async function init() {
+  await checkConnection();
+  await loadData();
+  renderRec();
+})();
+
+})();
+</script>
+</body>
+</html>

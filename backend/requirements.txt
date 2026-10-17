@@ -1,0 +1,18 @@
+# CareLoop AI Dependencies
+# Python 3.10+
+
+# Web Framework & Server
+fastapi>=0.115.0
+uvicorn[standard]>=0.32.0
+pydantic>=2.10.0
+httpx>=0.28.0
+
+# Database & Cloud Integration
+supabase>=2.30.0
+python-dotenv>=1.0.0
+
+# Reporting & Documentation
+python-docx>=1.1.0
+
+# Optional MCP Integration
+mcp>=1.8.0
